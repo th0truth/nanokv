@@ -20,15 +20,18 @@ static int32_t ht_hash(string s, const int a, const int m)
   return (int32_t)hash;
 }
 
-// First hash function determines the initial bucket
-static int32_t ht_get_hash(string s, const int32_t num_buckets, const int32_t attempt)
+int32_t HashTable::get_hash(const string &s, const int32_t num_buckets, const int32_t attempt)
 {
   const int32_t hash_a = ht_hash(s, 151, num_buckets);
-  const int32_t hash_b = ht_hash(s, 163, num_buckets);
 
-  // Doulbe hashing: (hash_a + (attempt * (hash_b + 1))) % buckets
-  // Adding 1 to hash_b ensures the step size is never 0
-  return (hash_a + (attempt * (hash_b + 1))) % num_buckets;
+  switch (this->strategy) {
+    case ProbingStrategy::LINEAR: return (hash_a + attempt) % num_buckets;
+    case ProbingStrategy::QUADRATIC: return (hash_a + (attempt * attempt)) % num_buckets;
+    case ProbingStrategy::DOUBLE_HASHING:
+    default:
+      const int32_t hash_b = ht_hash(s, 163, num_buckets);
+      return (hash_a + (attempt * (hash_b + 1))) % num_buckets;
+  }
 }
 
 ht_item *HashTable::new_item(const string &key, const string &value)
@@ -56,7 +59,7 @@ void HashTable::insert(const string &key, const string &value)
   }
 
   ht_item *item = new_item(key, value);
-  int32_t index = ht_get_hash(item->key, this->size, 0);
+  int32_t index = this->get_hash(item->key, this->size, 0);
   ht_item *current_item = this->items[index];
   int i = 1;
 
@@ -71,7 +74,7 @@ void HashTable::insert(const string &key, const string &value)
     }
 
     // Collision: move to the next index
-    index = ht_get_hash(item->key, this->size, i);
+    index = this->get_hash(item->key, this->size, i);
     current_item = this->items[index];
     i++;
   }
@@ -81,7 +84,7 @@ void HashTable::insert(const string &key, const string &value)
 
 string *HashTable::search(const string &key)
 {
-  int32_t index = ht_get_hash(key, this->size, 0);
+  int32_t index = this->get_hash(key, this->size, 0);
   ht_item *current_item = this->items[index];
   int i = 1;
   while (current_item != nullptr) {
@@ -90,7 +93,7 @@ string *HashTable::search(const string &key)
         return &current_item->value;
       }
     }
-    index = ht_get_hash(key, this->size, i);
+    index = this->get_hash(key, this->size, i);
     current_item = this->items[index];
     i++;
   }
@@ -104,7 +107,7 @@ void HashTable::remove(const string &key)
     resize_down();
   }
 
-  int32_t index = ht_get_hash(key, this->size, 0);
+  int32_t index = this->get_hash(key, this->size, 0);
   ht_item *current_item = this->items[index];
   int i = 1;
 
@@ -117,14 +120,15 @@ void HashTable::remove(const string &key)
         return;
       }
     }
-    index = ht_get_hash(key, this->size, i);
+    index = this->get_hash(key, this->size, i);
     current_item = this->items[index];
     i++; 
   }
 }
 
-HashTable::HashTable(void)
+HashTable::HashTable(ProbingStrategy strat)
 {
+  this->strategy = strat;
   this->base_size = HT_INITIAL_BASE_SIZE;
   this->size = next_prime(this->base_size);
   this->count = 0;
@@ -133,8 +137,9 @@ HashTable::HashTable(void)
   this->items = new ht_item*[this->size]();
 }
 
-HashTable::HashTable(int32_t base_size)
+HashTable::HashTable(int32_t base_size, ProbingStrategy strat)
 {
+  this->strategy = strat;
   this->base_size = base_size;
   this->size = next_prime(this->base_size);
   this->count = 0;
@@ -143,7 +148,7 @@ HashTable::HashTable(int32_t base_size)
   this->items = new ht_item*[this->size]();
 }
 
-HashTable::~HashTable(void)
+HashTable::~HashTable()
 {
   for (int i = 0; i < this->size; i++) {
     ht_item *item = this->items[i];
@@ -163,7 +168,7 @@ void HashTable::resize(const int32_t base_size)
   }
   
   // Create a temporary new has table with the new size
-  HashTable new_ht(base_size);
+  HashTable new_ht(base_size, this->strategy);
 
   // Re-hash all existing items into the new table
   for (int i = 0; i < this->size; i++) {
