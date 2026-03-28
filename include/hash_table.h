@@ -25,6 +25,8 @@ class HashTable {
     // Desctructor
     ~HashTable();
 
-    void *insert(string &key, string &value);
-    void remove(ht_item *item);
+    string *search(string key);
+    void insert(string key, string value);
+    void remove(string key);
+
 };
