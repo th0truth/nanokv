@@ -1,0 +1,40 @@
+#include "hash_table.h"
+#include <cstring>
+
+ht_item *HashTable::insert(const char *key, const char *value)
+{
+  // Allocate an item
+  ht_item *item = new ht_item;
+  item->key = strdup(key);
+  item->value = strdup(value);
+  return item;  
+}
+
+void HashTable::remove(ht_item *item)
+{
+  delete[] item->key;
+  delete[] item->value;
+  delete item;
+}
+
+HashTable::HashTable(void)
+{
+  this->size = 53;
+  this->count = 0;
+
+  // Allocate an array of size containing pointers to ht_item.
+  this->items = new ht_item*[this->size]();
+}
+
+HashTable::~HashTable(void)
+{
+  for (int i = 0; i < this->size; i++) {
+    ht_item *item = this->items[i];
+    if (item != nullptr) {
+      remove(item);
+    }
+  }
+
+  // Delete the array of pointers
+  delete[] this->items;
+}
