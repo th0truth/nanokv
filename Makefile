@@ -1,4 +1,4 @@
-TARGET = main
+TARGET = nanokv
 CC = g++
 
 SRC_DIRS = ./src
@@ -12,7 +12,7 @@ INC_FLAGS := $(addprefix -I,$(INC_DIRS))
 
 CFLAGS = $(INC_FLAGS)
 
-$(BUILD_DIR)/$(TARGET).o: $(SRCS) $(INCS)
+$(BUILD_DIR)/$(TARGET): $(SRCS) $(INCS)
 	mkdir -p $(BUILD_DIR)
 	$(CC) $(SRCS) -o $@ $(CFLAGS)
 
