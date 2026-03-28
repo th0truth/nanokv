@@ -16,7 +16,7 @@ static int32_t ht_hash(string s, const int a, const int m)
   for (int i = 0; i < len_s; i++) {
     hash = (hash * a + s[i]) % m;
   }
-  return (int32_t)hash;
+  return (int64_t)hash;
 }
 
 // First hash function determines the initial bucket
