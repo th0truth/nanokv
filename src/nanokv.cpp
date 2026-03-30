@@ -32,7 +32,7 @@ int main(int argc, char **argv) {
   string command, key, value;
 
   cout << "=== NanoKV ===\n";
-  cout << "Commands: SET <key> <value> | GET <key> | DEL <key> | EXIT\n\n";
+  cout << "Commands: SET <key> <value> | GET <key> | DEL <key> | DISPLAY | EXIT\n\n";
 
   while (true) {
     cout << "db> ";
@@ -47,7 +47,7 @@ int main(int argc, char **argv) {
       cout << "OK\n";
     } else if (command == "GET" || command == "get") {
       cin >> key;
-      string* result = db.search(key);
+      string *result = db.search(key);
       if (result) {
         cout << "\"" << *result << "\"\n";
       } else {
@@ -57,6 +57,8 @@ int main(int argc, char **argv) {
       cin >> key;
       db.remove(key);
       cout << "OK\n";
+    } else if (command == "DISPLAY" || command == "display") {
+      db.display("Current Hash Table State: ");
     } else {
       cout << "Error: Unknown command '" << command << "'\n";
       cin.ignore(10000, '\n');  // clear line

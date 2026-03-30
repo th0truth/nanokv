@@ -48,4 +48,6 @@ class HashTable {
     void insert(const std::string &key, const std::string &value);
     void remove(const std::string &key);
 
+    void display(const std::string msg = "Hash Table contents");
+
 };

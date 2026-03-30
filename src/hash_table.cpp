@@ -1,3 +1,5 @@
+#include <iostream>
+#include <iomanip>
 #include <string>
 #include <cstring>
 #include <cstdint>
@@ -124,6 +126,43 @@ void HashTable::remove(const string &key)
     current_item = this->items[index];
     i++; 
   }
+}
+
+void HashTable::display(string msg)
+{
+  size_t max_key_len = 3; // "Key"
+  size_t max_val_len = 5; // "Value"
+
+  // Find max lengths
+  for (int i = 0; i < this->size; i++) {
+    ht_item *item = this->items[i];
+    if (item != nullptr && item != &DELETED_ITEM) {
+      if (item->key.length() > max_key_len) max_key_len = item->key.length();
+      if (item->value.length() > max_val_len) max_val_len = item->value.length();
+    }
+  }
+
+  string border = "  +-------+-" + string(max_key_len, '-') + "-+-" + string(max_val_len, '-') + "-+";
+
+  cout << "\n" << msg << " (Count: " << this->count << ", Size: " << this->size << ")" << endl;
+  cout << border << endl;
+  cout << "  | Index | " << left << setw(max_key_len) << "Key" << " | " << left << setw(max_val_len) << "Value" << " |" << endl;
+  cout << border << endl;
+
+  for (int i = 0; i < this->size; i++) {
+    ht_item *item = this->items[i];
+    if (item == nullptr) continue;
+
+    cout << "  | " << right << setw(5) << i << " | ";
+    
+    if (item == &DELETED_ITEM) {
+      cout << left << setw(max_key_len) << "---" << " | " << right << setw(max_val_len) << "---" << " |" << endl;
+    } else {
+      cout << left << setw(max_key_len) << item->key << " | "
+           << right << setw(max_val_len) << item->value << " |" << endl;
+    }
+  }
+  cout << border << endl << endl;
 }
 
 HashTable::HashTable(ProbingStrategy strat)
