@@ -64,6 +64,7 @@ void HashTable::insert(const string &key, const string &value)
   int32_t index = this->get_hash(item->key, this->size, 0);
   ht_item *current_item = this->items[index];
   int i = 1;
+  int collisions = 0;
 
   while (current_item != nullptr) {
     if (current_item != &DELETED_ITEM) {
@@ -73,6 +74,7 @@ void HashTable::insert(const string &key, const string &value)
         this->items[index] = item;
         return; 
       }
+      collisions++;
     }
 
     // Collision: move to the next index
@@ -80,6 +82,11 @@ void HashTable::insert(const string &key, const string &value)
     current_item = this->items[index];
     i++;
   }
+
+  if (collisions > 0) {
+    std::cout << "[Probe Info] Inserted '" << key << "' after resolving " << collisions << " collisions.\n";
+  }
+
   this->items[index] = item;
   this->count++;
 }
