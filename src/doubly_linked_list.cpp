@@ -14,7 +14,8 @@ DoublyLinkedList::~DoublyLinkedList() {
   }
 }
 
-void DoublyLinkedList::insert(const string& key, const string& value) {
+void DoublyLinkedList::insert(const string& key, const string& value)
+{
   // If key already exists, update its value
   DLLNode* curr = head;
   while (curr != nullptr) {
@@ -36,7 +37,8 @@ void DoublyLinkedList::insert(const string& key, const string& value) {
   }
 }
 
-string* DoublyLinkedList::search(const string& key) {
+string* DoublyLinkedList::search(const string &key){
+
   DLLNode* curr = head;
   while (curr != nullptr) {
     if (curr->key == key) {
@@ -47,7 +49,8 @@ string* DoublyLinkedList::search(const string& key) {
   return nullptr;
 }
 
-void DoublyLinkedList::remove(const string& key) {
+void DoublyLinkedList::remove(const string &key)
+{
   DLLNode* curr = head;
   while (curr != nullptr && curr->key != key) {
     curr = curr->next;
@@ -70,7 +73,8 @@ void DoublyLinkedList::remove(const string& key) {
   delete curr;
 }
 
-void DoublyLinkedList::display(const string& msg) {
+void DoublyLinkedList::display(const string &msg)
+{
   if (!msg.empty()) {
     cout << msg << endl;
   }
@@ -85,7 +89,8 @@ void DoublyLinkedList::display(const string& msg) {
   cout << " <-> NULL" << endl;
 }
 
-void DoublyLinkedList::displayReverse(const string& msg) {
+void DoublyLinkedList::displayReverse(const string &msg)
+{
   if (!msg.empty()) {
     cout << msg << endl;
   }
@@ -100,6 +105,7 @@ void DoublyLinkedList::displayReverse(const string& msg) {
   cout << " <-> NULL" << endl;
 }
 
-bool DoublyLinkedList::isEmpty() {
+bool DoublyLinkedList::isEmpty()
+{
   return head == nullptr;
 }
