@@ -34,11 +34,25 @@ make
 
 ## Usage
 
-NanoKV includes an interactive command-line interface. You can specify the collision resolution strategy as a command-line argument.
+NanoKV includes an interactive command-line interface. You can specify the storage and collision resolution strategy as a command-line argument.
 
-```bash
-./build/nanokv [DOUBLE | LINEAR | QUADRATIC | CHAINING]
-```
+| Command | Strategy | Best For |
+| :--- | :--- | :--- |
+| `./build/nanokv DOUBLE` | **Double Hashing** (Default) | General purpose, avoids clustering. |
+| `./build/nanokv LINEAR` | **Linear Probing** | Cache performance, simple to implement. |
+| `./build/nanokv QUADRATIC` | **Quadratic Probing** | Reduces primary clustering. |
+| `./build/nanokv CHAINING` | **Chaining** | Handles high load factors gracefully. |
+| `./build/nanokv LIST` | **Singly Linked List** | O(N) search, simple linked structure. |
+
+### Data Representation
+
+Here is how different strategies represent your data internally when using the `DISPLAY` command:
+
+| Mode | Internal Data Representation Example |
+| :--- | :--- |
+| **HASH TABLE** | `[0]: (null), [1]: {k: "id", v: "101"}, [2]: (null), ...` |
+| **CHAINING** | `[0]: {k: "a", v: "1"} -> {k: "b", v: "2"} -> NULL, [1]: (null), ...` |
+| **LIST** | `[id: 101] -> [name: Alice] -> [status: Active] -> NULL` |
 
 ### Interactive Shell Commands
 

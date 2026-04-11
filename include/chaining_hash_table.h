@@ -6,7 +6,8 @@
 
 #include "hash_table.h" // For ht_item
 
-class ChainingHashTable {
+class ChainingHashTable
+{
 private:
   int32_t num_buckets;
   std::vector<std::list<ht_item>> table;

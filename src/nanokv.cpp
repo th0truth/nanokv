@@ -3,6 +3,8 @@
 
 #include "hash_table.h"
 #include "chaining_hash_table.h"
+#include "singly_linked_list.h"
+
 using namespace std;
 
 template <typename T>
@@ -36,7 +38,7 @@ void run_repl(T& db) {
       db.remove(key);
       cout << "OK\n";
     } else if (command == "DISPLAY" || command == "display") {
-      db.display("Current Hash Table State: ");
+      db.display("Current State: ");
     } else {
       cout << "Error: Unknown command '" << command << "'\n";
       cin.ignore(10000, '\n');  // clear line
@@ -47,6 +49,7 @@ void run_repl(T& db) {
 int main(int argc, char **argv) {
   ProbingStrategy strategy = ProbingStrategy::DOUBLE_HASHING; 
   bool use_chaining = false;
+  bool use_list = false;
 
   if (argc > 1) {
     string strat_argv = argv[1];
@@ -63,16 +66,22 @@ int main(int argc, char **argv) {
     } else if (strat_argv == "CHAINING") {
       use_chaining = true;
       cout << "Using strategy: CHAINING\n" << endl;
+    } else if (strat_argv == "LIST") {
+      use_list = true;
+      cout << "Using strategy: SINGLY LINKED LIST (O(N) Search)\n" << endl;
     } else {
       cout << "Error: Unknown strategy '" << strat_argv << "'" << endl;
-      cout << "Usage: ./build/nanokv [LINEAR | QUADRATIC | DOUBLE | CHAINING]\n" << endl;
+      cout << "Usage: ./build/nanokv [LINEAR | QUADRATIC | DOUBLE | CHAINING | LIST]\n" << endl;
       return 1;
     }
   } else {
     cout << "Using default strategy: DOUBLE HASHING\n";
   }
 
-  if (use_chaining) {
+  if (use_list) {
+    SinglyLinkedList db;
+    run_repl(db);
+  } else if (use_chaining) {
     ChainingHashTable db(50);
     run_repl(db);
   } else {
