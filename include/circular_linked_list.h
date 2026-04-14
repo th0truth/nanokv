@@ -15,10 +15,10 @@ class CircularLinkedList {
     CircularLinkedList();
     ~CircularLinkedList();
 
-    void insert(const std::string& key, const std::string& value);
-    void remove(const std::string& key);
-    std::string* search(const std::string& key);
-    void display(const std::string& msg = "");
+    void insert(const std::string &key, const std::string &value);
+    void remove(const std::string &key);
+    std::string* search(const std::string &key);
+    void display(const std::string &msg = "");
 
     bool isEmpty();
 };

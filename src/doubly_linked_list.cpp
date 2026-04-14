@@ -5,7 +5,8 @@ using namespace std;
 
 DoublyLinkedList::DoublyLinkedList() : head(nullptr), tail(nullptr) {}
 
-DoublyLinkedList::~DoublyLinkedList() {
+DoublyLinkedList::~DoublyLinkedList()
+{
   DLLNode* current = head;
   while (current != nullptr) {
     DLLNode* next = current->next;
@@ -14,7 +15,7 @@ DoublyLinkedList::~DoublyLinkedList() {
   }
 }
 
-void DoublyLinkedList::insert(const string& key, const string& value)
+void DoublyLinkedList::insert(const string &key, const string &value)
 {
   // If key already exists, update its value
   DLLNode* curr = head;
@@ -37,8 +38,8 @@ void DoublyLinkedList::insert(const string& key, const string& value)
   }
 }
 
-string* DoublyLinkedList::search(const string &key){
-
+string* DoublyLinkedList::search(const string &key)
+{
   DLLNode* curr = head;
   while (curr != nullptr) {
     if (curr->key == key) {

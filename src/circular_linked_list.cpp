@@ -18,7 +18,7 @@ CircularLinkedList::~CircularLinkedList()
   } while (current != head);
 }
 
-void CircularLinkedList::insert(const string& key, const string& value)
+void CircularLinkedList::insert(const string &key, const string &value)
 {
   // If key already exists, update its value
   if (head != nullptr) {
@@ -49,7 +49,7 @@ void CircularLinkedList::insert(const string& key, const string& value)
   }
 }
 
-string* CircularLinkedList::search(const string& key)
+string* CircularLinkedList::search(const string &key)
 {
   if (head == nullptr) return nullptr;
 
@@ -62,7 +62,7 @@ string* CircularLinkedList::search(const string& key)
   return nullptr;
 }
 
-void CircularLinkedList::remove(const string& key)
+void CircularLinkedList::remove(const string &key)
 {
   if (head == nullptr) return;
 
@@ -101,7 +101,7 @@ void CircularLinkedList::remove(const string& key)
   } while (curr != head);
 }
 
-void CircularLinkedList::display(const string& msg)
+void CircularLinkedList::display(const string &msg)
 {
   if (!msg.empty()) cout << msg << endl;
   if (head == nullptr) {
