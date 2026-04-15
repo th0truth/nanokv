@@ -45,6 +45,7 @@ NanoKV includes an interactive command-line interface. You can specify the stora
 | `./build/nanokv LIST` | **Singly Linked List** | O(N) search, simple linked structure. |
 | `./build/nanokv DOUBLE_LIST` | **Doubly Linked List** | Bi-directional traversal. |
 | `./build/nanokv CIRCULAR_LIST` | **Circular Linked List** | Last node points back to head. |
+| `./build/nanokv STACK` | **Stack** | LIFO (Last In, First Out) data structure. |
 
 ### Data Representation
 
@@ -57,6 +58,7 @@ Here is how different strategies represent your data internally when using the `
 | **LIST** | `[id: 101] -> [name: Alice] -> NULL` |
 | **DOUBLE_LIST** | `[id: 101] <-> [name: Alice] <-> NULL` |
 | **CIRCULAR_LIST** | `[id: 101] -> [name: Alice] -> (HEAD)` |
+| **STACK** | `[1]: World <- TOP, [0]: Hello` |
 
 ### Interactive Shell Commands
 
@@ -79,6 +81,27 @@ OK
 db> EXIT
 ```
 
+### Stack Mode Commands
+
+```text
+=== NanoKV (Stack Mode) ===
+Commands: PUSH <value> | POP | TOP | SIZE | DISPLAY | EXIT
+
+stack> PUSH Hello
+OK
+stack> PUSH World
+OK
+stack> DISPLAY
+Stack (Top to Bottom):
+  [1]: World <- TOP
+  [0]: Hello
+stack> TOP
+"World"
+stack> POP
+OK
+stack> EXIT
+```
+
 ## Integration Example
 
 NanoKV can be integrated directly into other C++ projects.
@@ -88,6 +111,7 @@ NanoKV can be integrated directly into other C++ projects.
 #include <string>
 #include "hash_table.h"
 #include "chaining_hash_table.h"
+#include "stack.h"
 
 int main() {
   // Option 1: Open Addressing (Double Hashing)
@@ -97,6 +121,10 @@ int main() {
   // Option 2: Chaining
   ChainingHashTable db_chain(50);
   db_chain.insert("type", "chaining");
+
+  // Option 3: Stack
+  Stack<std::string> my_stack(100);
+  my_stack.push("Hello");
 
   return 0;
 }
