@@ -19,6 +19,7 @@ int main(int argc, char **argv)
   bool use_double_list = false;
   bool use_circular_list = false;
   bool use_stack = false;
+  bool use_queue = false;
 
   if (argc > 1) {
     string strat_argv = argv[1];
@@ -47,9 +48,12 @@ int main(int argc, char **argv)
     } else if (strat_argv == "STACK") {
       use_stack = true;
       cout << "Using strategy: STACK\n" << endl;
+    } else if (strat_argv == "QUEUE") {
+      use_queue = true;
+      cout << "Using strategy: QUEUE\n" << endl;
     } else {
       cout << "Error: Unknown strategy '" << strat_argv << "'" << endl;
-      cout << "Usage: ./build/nanokv [LINEAR | QUADRATIC | DOUBLE | CHAINING | LIST | DOUBLE_LIST | CIRCULAR_LIST | STACK]\n" << endl;
+      cout << "Usage: ./build/nanokv [LINEAR | QUADRATIC | DOUBLE | CHAINING | LIST | DOUBLE_LIST | CIRCULAR_LIST | STACK | QUEUE]\n" << endl;
       return 1;
     }
   } else {
@@ -59,6 +63,9 @@ int main(int argc, char **argv)
   if (use_stack) {
     Stack<string> db(100);
     run_stack_repl(db);
+  } else if (use_queue) {
+    Queue<string> db(100);
+    run_queue_repl(db);
   } else if (use_circular_list) {
     CircularLinkedList db;
     run_repl(db);

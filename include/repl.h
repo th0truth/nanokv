@@ -1,5 +1,8 @@
 #include <iostream>
 #include <string>
+#include "stack.h"
+#include "queue.h"
+
 using namespace std;
 
 template <typename T>
@@ -85,3 +88,48 @@ void run_stack_repl(Stack<T>& stack)
     }
   }
 };
+
+template <typename T>
+void run_queue_repl(Queue<T>& queue)
+{
+  string command, value;
+
+  cout << "=== NanoKV (Queue Mode) ===\n";
+  cout << "Commands: ENQUEUE <value> | DEQUEUE | FRONT | SIZE | DISPLAY | EXIT\n\n";
+
+  while (true) {
+    cout << "queue> ";
+    if (!(cin >> command)) break;
+
+    if (command == "EXIT" || command == "exit") {
+      break;
+    } else if (command == "ENQUEUE" || command == "enqueue") {
+      cin >> value;
+      if (queue.enqueue(value)) {
+        cout << "OK\n";
+      } else {
+        cout << "Error: Queue is full\n";
+      }
+    } else if (command == "DEQUEUE" || command == "dequeue") {
+      if (queue.dequeue()) {
+        cout << "OK\n";
+      } else {
+        cout << "Error: Queue is empty\n";
+      }
+    } else if (command == "FRONT" || command == "front") {
+      if (!queue.isEmpty()) {
+        cout << "\"" << queue.front() << "\"\n";
+      } else {
+        cout << "(empty)\n";
+      }
+    } else if (command == "SIZE" || command == "size") {
+      cout << queue.size() << " / " << queue.getCapacity() << "\n";
+    } else if (command == "DISPLAY" || command == "display") {
+      queue.display("Current Queue State:");
+    } else {
+      cout << "Error: Unknown command '" << command << "'\n";
+      cin.ignore(10000, '\n');  // clear line
+    }
+  }
+}
+
